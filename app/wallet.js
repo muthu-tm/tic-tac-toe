@@ -1,46 +1,19 @@
-const rpcURL = "http://127.0.0.1";
+const Web3 = require('web3'),
+config = require('./config.js'),
+fs = require('fs'),
+etherContractArtifacts = JSON.parse(fs.readFileSync('/Users/muthu_thavamani/Documents/Muthu/GitHub/tic-tac-toe/build/contracts/TicTacToe.json', 'utf8')),
+contract_abi = etherContractArtifacts.abi,
+contractaddress = config.id
 
-const HDWalletProvider = require('truffle-hdwallet-provider');
-const Web3 = require('web3');
+if (typeof web3 !== 'undefined') {
+	var web3 = new Web3(web3.currentProvider)
+} else {
+	var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
+}
 
-const provider = new HDWalletProvider(
-	'stamp trial lucky sunny key whale achieve outside snake month bean badge', rpcURL
-);
-
-const web3 = new Web3(provider);
-
-const compiledContract = require('./../build/contracts/TicTacToe.json');
-
-(async () => {
-	const accounts = await web3.eth.personal.getAccounts();
-
-	console.log(`Attempting to deploy from account: ${accounts[0]}`);
-
-	const deployedContract = await new web3.eth.Contract(compiledContract.abi)
-		.deploy({
-			data: '0x' + compiledContract.evm.bytecode.object,
-			arguments: [3, 5]
-		})
-		.send({
-			from: accounts[0],
-			gas: '6000000'
-		});
-
-	console.log(
-		`Contract deployed at address: ${deployedContract.options.address}`
-	);
-
-	provider.engine.stop();
-})();
-
-// async function getsupply() {
-//     try {
-//         var total = await Contract.methods.totalSupply();
-//         console.log(total);
-//     } catch (err) {
-//         console.error("Error:", err);
-//     }
-// }
+const contractInstance = new web3.eth.Contract(contract_abi, contractaddress);
+console.log(contractInstance)
+web3.eth.defaultAccount = web3.eth.accounts[0]
 
 /**
  * Creates a wallet with 1 account in it
@@ -51,6 +24,18 @@ function createWallet() {
     console.log(wallet)
 }
 
+function getTotalSupply() {
+	contractInstance.methods.totalSupply().call(   
+		{
+			from:   web3.eth.defaultAccount,
+			to:     contractaddress           
+	}).then((result) => {
+		 console.log(result)
+	})
+	.catch((err) => {
+		console.log(err);
+	});
+}
 // /**
 //  * Adds the given account into the wallet
 //  * @param {string} privateKey 

@@ -18,12 +18,12 @@
  *
  */
 
-const HDWalletProvider = require('truffle-hdwallet-provider');
+// const HDWalletProvider = require('truffle-hdwallet-provider');
 // const infuraKey = "372ad5a18782475eac2adb5f84a80b3d";
 
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
-const mnemonic = "stamp trial lucky sunny key whale achieve outside snake month bean badge";
+// const mnemonic = "stamp trial lucky sunny key whale achieve outside snake month bean badge";
 
 module.exports = {
   /**
