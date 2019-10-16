@@ -15,7 +15,7 @@
 
 ## Sofwares/Tools used
 
-* Truffle
-* Solidity
-* web3js
-* Geth/Ganeche to work with private ethereum blockchain
+* Truffle - v5.0.29
+* Solidity - ^0.5.0
+* web3js - v1.2.1
+* ganeche-cli - v6.7.0
