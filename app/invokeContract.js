@@ -73,6 +73,20 @@ async function joingGame(playerAddress) {
 	}
 }
 
+async function play(playerAddress, row, column) {
+	try {
+		var result = await contractInstance.methods.play(row, column).call({
+			from: playerAddress,
+		});
+		console.log(result)
+		
+		return result
+	} catch (err) {
+		console.error("Error - join")
+		throw err
+	}
+}
+
 async function getTokenBalance(playerAddress) {
 	try {
 		var result = await contractInstance.methods.balanceOf(playerAddress).call({

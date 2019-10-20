@@ -69,6 +69,7 @@ contract TicTacToe {
      */
     function join() public {
         require (game.player1 != address(0), "Player1 has not joined yet, you cannot JOIN; Please start new Game");
+        require (game.player1 != msg.sender, "Both players shouln't be same! please join in different game");
         lockDownTokens(getTotalBetToken());
         
         game.player2 = msg.sender;

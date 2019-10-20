@@ -45,8 +45,9 @@ function initGame() {
     console.log("8. View token balance")
     console.log("9. Start Game!")
     console.log("10. Join to an existing Game!")
-    console.log("11. View Game Board!")
-    console.log("12. View Account Holders")
+    console.log("11. Play!")
+    console.log("12. View Game Board!")
+    console.log("13. View Account Holders")
     prompt.start()
     prompt.get(['option'], async function (err, result) {
         if (result.option == 1) {
@@ -146,7 +147,7 @@ function initGame() {
                 prompt.start();
                 prompt.get(['bet_amount'], async function (err, result) {
                     var amounts = result.bet_amount.split(',')
-                    
+
                     var bet_amounts = []
                     amounts.forEach(element => {
                         bet_amounts.push(parseInt(element))
@@ -169,28 +170,38 @@ function initGame() {
                 });
             });
         } else if (result.option == 10) {
-            console.log("Please enter the token amount to purchase")
+            try {
+                var res = await tictactoe.joingGame(account)
+                console.log(res)
+                await initGame()
+            } catch (err) {
+                console.error("Error while buying token", err)
+                await initGame()
+            }
+        } else if (result.option == 11) {
+            console.log("Please enter the place for the round, e.x: 0,1 - row, column")
             prompt.start();
-            prompt.get(['token'], async function (err, result) {
+            prompt.get([place], async function (err, result) {
                 try {
-                    var res = await tictactoe.buyToken(account, result.token)
+                    var place = result.place.split(',')
+                    var res = await tictactoe.play(account, place[0], place[1])
                     console.log(res)
+                    await initGame()
                 } catch (err) {
                     console.error("Error while buying token", err)
+                    await initGame()
                 }
             });
-
-            await initGame()
-        } else if (result.option == 11) {
+        } else if (result.option == 12) {
             try {
-                var res = await tictactoe.getGameState()
+                res = await tictactoe.getGameState()
                 console.log(res)
+                await initGame()
             } catch (err) {
                 console.error("Error while getting the current game state", err)
+                await initGame()
             }
-
-            await initGame()
-        } else if (result.option == 12) {
+        } else if (result.option == 13) {
             try {
                 var holders = await tictactoe.getTokenHoldersList(account)
                 console.log("Token holders list: ", holders)
