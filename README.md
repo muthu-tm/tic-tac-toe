@@ -40,9 +40,10 @@ To setup a local etehreum test envionment run the below command in separate term
 To buuild, compile, & deploy the dapp in the local ethereum environment
 > $ truffle migrate
 
+
 Follow the below steps to play with this;
 
-To start this,
+To start this; need to run this in two seperate terminal for each players
 > $ node server.js
 
 You will see list of options like below
@@ -58,8 +59,9 @@ Please select an option before start the game!
 8. View token balance
 9. Start Game!
 10. Join to an existing Game!
-11. View Game Board!
-12. View Account Holders
+11. Play!
+12. View Game Board!
+13. View Account Holders
 
 Please select one and proceed further; To work better please follow these steps,
 
@@ -67,4 +69,5 @@ Please select one and proceed further; To work better please follow these steps,
 * To load an account with balance, select an account from available list by selecting option "3"
 * Purchase token before starting the game using option "7"
 * Start the game using option "9"; Join to an existing game by selecting option "10"
-* To view the currrent game status, select option 11
+* To play the game select option 11
+* To view the currrent game status, select option 12
