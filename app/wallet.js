@@ -1,25 +1,52 @@
 const contract_util = require('./contract-utils.js'),
-web3 = contract_util.getWeb3(),
-contractInstance = contract_util.getContract();
+    web3 = contract_util.getWeb3();
 
 /**
- * Creates a wallet with 1 account in it
- * Logs the wallet details with account address 
+ * Creates a account
+ * @returns {object} account
  */
-function createWallet() {
-    var wallet = web3.eth.accounts.wallet.create(1);
-    console.log(wallet)
+function createWalletAccount() {
+    var account = web3.eth.accounts.create()
+    return account
 }
 
 /**
- * Adds the given account into the wallet
+ * Creates a account using the given privatekey
+ * @param {string} privateKey
+ * @returns {object} account
+ */
+function createAccountbyKey(privateKey) {
+    var account = web3.eth.accounts.privateKeyToAccount(privateKey)
+    return account
+}
+
+/**
+ * Sign the transaction with the given private key
+ * @param {object} tx - transaction object
  * @param {string} privateKey 
+ * @returns {object} result
  */
-function addWallet(privateKey) {
-    var wallet = web3.eth.accounts.wallet.add(privateKey);
-    console.log(wallet);
+function signTransaction(tx, privateKey) {
+    web3.eth.accounts.signTransaction({
+        to: '0xF0109fC8DF283027b6285cc889F5aA624EaC1F55',
+        value: '1000000000',
+        gas: 2000000
+    },
+        privateKey
+    ).then((result) => {
+        console.log(result)
+        return result
+    }).catch((err) => {
+        console.log(err);
+    });
 }
 
-exports.createWallet = createWallet;
-exports.addWallet = addWallet;
-exports.createWallet = createWallet;
+function getAccount() {
+    
+}
+
+module.exports = {
+    createWalletAccount,
+    createAccountbyKey,
+    signTransaction
+}

@@ -5,14 +5,16 @@ contract TicTacToe {
     
     address payable owner;
     uint tokenSupply = 1000000;
+    uint tokenValue = 10;
     
-    mapping(address => uint) playerTokenMapping;
+    mapping(address => uint) public playerTokenMapping;
     mapping(address => uint) tokenLockMapping;
-    
+    address[] public holders;
+
     struct Game {
         uint    totalRounds;
         uint    currentRound;
-        uint    turn; 
+        uint    turn;
         address payable player1;
         address payable player2;
         uint    time_limit;
@@ -29,11 +31,21 @@ contract TicTacToe {
     /**
      * @dev User buys few tokens to their account
      * @param _token - number of tokens to buy
-     * 
      */
-    function getToken(uint _token)  public payable {
-        require(msg.value > 0, "Value was 0");
-        buyToken(_token);
+    function getToken(uint _token)  public payable returns(uint){
+        uint _weiAmount = _token * tokenValue;
+        require(msg.value >= _weiAmount, "Insufficient value sent to buy token");
+        
+        owner.transfer(_weiAmount);
+        tokenSupply -= _token;
+        playerTokenMapping[msg.sender] += _token;
+        holders.push(msg.sender);
+        
+        return playerTokenMapping[msg.sender];
+    }
+
+    function getTokenHolders() public view returns (address[] memory) {
+        return holders;
     }
     
     /**
@@ -139,7 +151,7 @@ contract TicTacToe {
     /**
      * @dev checks the current sender is the game winner
      * @param _player - int represent whether the current sender is Player1/Player2
-     * 
+     * @return bool - checks whether the player is winner or not
      */
     function isWinner(uint _player) internal view returns (bool winner) {
         if (check(_player, 0, 1, 2, 0, 1, 2)
@@ -202,15 +214,16 @@ contract TicTacToe {
     }
     
     /**
-     * @dev returns total bet tokens
-     * @return bool - total token count
+     * @dev get total bet tokens
+     * @return uint - total token count
      */
     function getTotalBetToken() private view returns(uint) {
         uint total = 0;
         for (uint index = 0; index < game.betForEachRounds.length; index++)
             total += game.betForEachRounds[index];
+
+        return total;
     }
-    
     
      /**
      * @dev returns total token supply
@@ -222,12 +235,13 @@ contract TicTacToe {
     
     /**
      * @dev returns the balance token of the provided address
-     * @param _playerAddress - address of the player
+     * @param _playerAddress - address of the player to check the token balance
      * @return uint - token balance
      */
     function balanceOf(address _playerAddress) public view returns(uint) {
         return playerTokenMapping[_playerAddress];
     }
+    
     
     /**
      * @dev transfer the amount of token to _toAddress from _fromAddress
@@ -249,23 +263,22 @@ contract TicTacToe {
     
     /**
      * @dev Player should buy token using theri ether
-     * @param _token - number of token to buy
-     * 
+     * @param _weiAmount - amount to buy token
+     * @param _token - amount of token to buy
      */
-    function buyToken(uint _token) private  {
-        uint weiAmount = _token * 10;
-        owner.transfer(weiAmount);
-        playerTokenMapping[msg.sender] += _token; 
+    function buyToken(address _playerAddress, uint _token, uint _weiAmount) private  {
+        playerTokenMapping[_playerAddress] += _token;
+        owner.transfer(_weiAmount);
+        tokenSupply -= _token;
     }
     
     /**
      * @dev locks down the total bet tokens till the game seconds
      * @param _token - total bet amount
-     * 
      */
     function lockDownTokens(uint _token) private {
         //check for sufficient token to bet for game
-        require(playerTokenMapping[msg.sender] > _token, "Insufficient token in sender account to bet");
+        require(playerTokenMapping[msg.sender] >= _token, "Insufficient token in sender account to bet");
         
         tokenLockMapping[msg.sender] += _token;
         playerTokenMapping[msg.sender] -= _token;
@@ -274,7 +287,6 @@ contract TicTacToe {
     /**
      * @dev Once the game was over players token will be released
      * @param _playerAddress - address of the player
-     * 
      */
     function releaseToken(address _playerAddress) private {
         uint token = tokenLockMapping[_playerAddress];

@@ -1,20 +1,112 @@
 const contract_util = require('./contract-utils.js'),
-web3 = contract_util.getWeb3(),
-contractInstance = contract_util.getContract();
+	web3 = contract_util.getWeb3(),
+	contractInstance = contract_util.getContract();
 
-function getTotalSupply() {
-	contractInstance.methods.totalSupply().call(   
-		{
-			from:   web3.eth.defaultAccount,
-			to:     contractaddress           
-	}).then((result) => {
-		 console.log(result)
-	})
-	.catch((err) => {
-		console.log(err);
-	});
+async function getTotalSupply() {
+	try {
+		var result = await contractInstance.methods.totalSupply().call({
+			from: web3.eth.defaultAccount
+		});
+		console.log(result)
+
+		return result
+	} catch (err) {
+		console.error("Error - totalSupply")
+		throw err
+	}
+}
+
+async function buyToken(playerAddress, token) {
+	try {
+		var result = await contractInstance.methods.getToken(token).call({
+			from: playerAddress,
+			value: (token * 10)
+		});
+		console.log(result)
+
+		return result
+	} catch (err) {
+		console.error("Error - getToken")
+		throw err
+	}
+}
+
+async function getGameState() {
+	try {
+		var result = await contractInstance.methods.getState().call({
+			from: web3.eth.defaultAccount,
+		});
+		console.log(result)
+
+		return result
+	} catch (err) {
+		console.error("Error - getState")
+		throw err
+	}
+}
+
+async function startGame(playerAddress, rounds, betForEachRounds) {
+	try {
+		var result = await contractInstance.methods.start(rounds, betForEachRounds).call({
+			from: playerAddress,
+		});
+		console.log(result)
+		
+		return result
+	} catch (err) {
+		console.error("Error - start")
+		throw err
+	}
+}
+
+async function joingGame(playerAddress) {
+	try {
+		var result = await contractInstance.methods.join().call({
+			from: playerAddress,
+		});
+		console.log(result)
+		
+		return result
+	} catch (err) {
+		console.error("Error - join")
+		throw err
+	}
+}
+
+async function getTokenBalance(playerAddress) {
+	try {
+		var result = await contractInstance.methods.balanceOf(playerAddress).call({
+			from: playerAddress,
+		});
+		console.log(result)
+		
+		return result
+	} catch (err) {
+		console.error("Error - balanceOf")
+		throw err
+	}
+}
+
+async function getTokenHoldersList(playerAddress) {
+	try {
+		var result = await contractInstance.methods.getKeys().call({
+			from: playerAddress,
+		});
+		console.log(result)
+		
+		return result
+	} catch (err) {
+		console.error("Error - getKeys")
+		throw err
+	}
 }
 
 module.exports = {
-    getTotalSupply
+	getTotalSupply,
+	buyToken,
+	getGameState,
+	startGame,
+	joingGame,
+	getTokenBalance,
+	getTokenHoldersList
 }

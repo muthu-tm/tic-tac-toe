@@ -15,7 +15,28 @@
 
 ## Sofwares/Tools used
 
-* Truffle - v5.0.29
-* Solidity - ^0.5.0
-* web3js - v1.2.1
+* Truffle     - v5.0.29
+* Solidity    - ^0.5.0
+* web3js      - v1.2.1
 * ganeche-cli - v6.7.0
+* node        - v8.113
+
+## Network Setup
+
+To install truffle framework via npm
+> $ npm install -g truffle
+
+To install Ethereum Blockchain Simulator
+> $ npm install -g ganache-cli
+
+To install web3 Library
+> $ npm install web3
+
+> $ npm install prompt
+
+To setup a local etehreum test envionment run the below command in separate terminal; It runs on port 8545, by default.
+> $ ganache-cli
+
+To buuild, compile, & deploy the dapp in the local ethereum environment
+> $ truffle migrate
+
