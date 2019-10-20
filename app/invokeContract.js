@@ -2,6 +2,8 @@ const contract_util = require('./contract-utils.js'),
 	web3 = contract_util.getWeb3(),
 	contractInstance = contract_util.getContract();
 
+var tokenValue = 10;
+
 async function getTotalSupply() {
 	try {
 		var result = await contractInstance.methods.totalSupply().call({
@@ -20,7 +22,7 @@ async function buyToken(playerAddress, token) {
 	try {
 		var result = await contractInstance.methods.getToken(token).call({
 			from: playerAddress,
-			value: (token * 10)
+			value: (token * tokenValue)
 		});
 		console.log(result)
 
@@ -59,7 +61,7 @@ async function startGame(playerAddress, rounds, betForEachRounds) {
 	}
 }
 
-async function joingGame(playerAddress) {
+async function joinGame(playerAddress) {
 	try {
 		var result = await contractInstance.methods.join().call({
 			from: playerAddress,
@@ -120,7 +122,7 @@ module.exports = {
 	buyToken,
 	getGameState,
 	startGame,
-	joingGame,
+	joinGame,
 	getTokenBalance,
 	getTokenHoldersList
 }

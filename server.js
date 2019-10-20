@@ -157,7 +157,7 @@ function initGame() {
                     if (bet_amounts.length == rounds) {
                         try {
                             var res = await tictactoe.startGame(account, rounds, bet_amounts)
-                            console.log(res)
+                            console.log("You are PLAYER1; Wait for player2 to play", res)
                             await initGame()
                         } catch (err) {
                             console.error("Error while starting game", err)
@@ -171,11 +171,11 @@ function initGame() {
             });
         } else if (result.option == 10) {
             try {
-                var res = await tictactoe.joingGame(account)
-                console.log(res)
+                var res = await tictactoe.joinGame(account)
+                console.log("You are PLAYER2; Wait for your turn to play", res)
                 await initGame()
             } catch (err) {
-                console.error("Error while buying token", err)
+                console.error("Error while joining the game", err)
                 await initGame()
             }
         } else if (result.option == 11) {
@@ -185,17 +185,17 @@ function initGame() {
                 try {
                     var place = result.place.split(',')
                     var res = await tictactoe.play(account, place[0], place[1])
-                    console.log(res)
+                    console.log("Played Well!", res)
                     await initGame()
                 } catch (err) {
-                    console.error("Error while buying token", err)
+                    console.error("Error while playing", err)
                     await initGame()
                 }
             });
         } else if (result.option == 12) {
             try {
                 res = await tictactoe.getGameState()
-                console.log(res)
+                console.log("GAME BOARD \n", res)
                 await initGame()
             } catch (err) {
                 console.error("Error while getting the current game state", err)
@@ -207,7 +207,7 @@ function initGame() {
                 console.log("Token holders list: ", holders)
                 await initGame()
             } catch (err) {
-                console.error("Error while starting game", err)
+                console.error("Error while getting the holders list", err)
                 await initGame()
             }
         } else {
