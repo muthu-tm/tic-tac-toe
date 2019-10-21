@@ -40,10 +40,14 @@ To setup a local etehreum test envionment run the below command in separate term
 To buuild, compile, & deploy the dapp in the local ethereum environment
 > $ truffle migrate
 
+Note: After this deployment, you will get the transaction details that includes "contract address"; copy that and updated /app/config.js
 
-Follow the below steps to play with this;
+> id: '0x6B90a4Cd1467F5BafE3e16D86820ADa42543A5b1'
 
-To start this; need to run this in two seperate terminal for each players
+
+It's all set to start the GAME!
+
+To start this, need to run the below command in two seperate terminals for each players
 > $ node server.js
 
 You will see list of options like below
