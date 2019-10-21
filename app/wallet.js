@@ -1,5 +1,5 @@
-const contract_util = require('./contract-utils.js'),
-    web3 = contract_util.getWeb3();
+const contractUtil = require('./contract-utils.js'),
+    web3 = contractUtil.getWeb3();
 
 /**
  * Creates a account
@@ -27,22 +27,13 @@ function createAccountbyKey(privateKey) {
  * @returns {object} result
  */
 function signTransaction(tx, privateKey) {
-    web3.eth.accounts.signTransaction({
-        to: '0xF0109fC8DF283027b6285cc889F5aA624EaC1F55',
-        value: '1000000000',
-        gas: 2000000
-    },
-        privateKey
+    web3.eth.accounts.signTransaction(tx, privateKey
     ).then((result) => {
         console.log(result)
         return result
     }).catch((err) => {
         console.log(err);
     });
-}
-
-function getAccount() {
-    
 }
 
 module.exports = {

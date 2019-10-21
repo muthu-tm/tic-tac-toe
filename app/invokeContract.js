@@ -1,6 +1,6 @@
-const contract_util = require('./contract-utils.js'),
-	web3 = contract_util.getWeb3(),
-	contractInstance = contract_util.getContract();
+const contractUtil = require('./contract-utils.js'),
+	web3 = contractUtil.getWeb3(),
+	contractInstance = contractUtil.getContract();
 
 var tokenValue = 10;
 
@@ -123,6 +123,7 @@ module.exports = {
 	getGameState,
 	startGame,
 	joinGame,
+	play,
 	getTokenBalance,
 	getTokenHoldersList
 }

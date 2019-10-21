@@ -5,34 +5,6 @@ const prompt = require('prompt'),
 
 var account;
 
-function playTurn(player) {
-    console.log('Your turn player: ' + player);
-    prompt.start();
-    prompt.get(['position'], function (err, result) {
-
-        if (validateMove(result.position) === true) {
-            markBoard(result.position, player);
-            printBoard();
-            if (checkWin(player) === true) {
-                console.log('Winner Winner!');
-                return;
-            }
-            if (checkTie() === true) {
-                console.log('Tie Game');
-                return;
-            }
-            if (player === 'X') {
-                playTurn('O');
-            } else {
-                playTurn('X');
-            }
-        } else {
-            console.log('incorrect input please try again...');
-            playTurn(player);
-        }
-    });
-}
-
 function initGame() {
     console.log("\n Please select an option before start the game!")
     console.log("1. Create Wallet Account")

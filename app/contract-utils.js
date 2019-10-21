@@ -5,8 +5,6 @@ const Web3 = require('web3'),
     contract_abi = etherContractArtifacts.abi,
     contractaddress = config.id
 
-var ganacheAccounts = [];
-
 if (typeof web3 !== 'undefined') {
     var web3 = new Web3(web3.currentProvider)
 } else {
@@ -25,7 +23,6 @@ function getWeb3() {
 async function getGanacheAccounts() {
     try {
         var addr = await web3.eth.getAccounts()
-        ganacheAccounts.push(addr)
         return addr
     } catch (err) {
         console.error("Error - getAccounts")
